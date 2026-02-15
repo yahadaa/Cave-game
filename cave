@@ -1,0 +1,434 @@
+import random
+import copy
+
+
+# grid = []
+# grid_h = []
+
+# grid.insert(0, "0")
+# grid.insert(1, "snail")
+# grid.insert(2, "2")
+# grid.insert(3, "3")
+
+# grid_1 = []
+# grid_1.insert(0, "0")
+# grid_1.insert(1, "1")
+# grid_1.insert(2, "2")
+# grid_1.insert(3, "3")
+
+# print(f"1d grid:")
+# print(grid)
+
+# print(f"item 1:" + grid[1])
+
+# grid_h = []
+
+# grid_h.insert(0,
+#     grid
+# )
+# grid_h.insert(1,
+#     grid_1
+# )
+
+# print(f"2d grid:")
+# print(grid_h)
+
+# print(f"item 1:") 
+# print(grid_h[1])
+
+
+# print(f"item 1 - 1:") 
+# print(grid_h[1][0])
+
+
+# print(f"item 1 - 1:") 
+# print(grid_h[1][2])
+
+# print(f"item 1 - 1:") 
+
+# x = 4
+# y = 4
+
+def make_grid(x, y):
+    grid_h = []
+    grid = []
+    for i in range(y):
+        grid.insert(i, "-")
+        # grid.insert(i, i)
+
+
+    for j in range(x):
+        grid_h.insert(j, grid.copy())
+   
+    return grid_h
+
+# makes a grid for x and puts each y value into the x grid as another(grid in a grid)
+
+def print_grid(map):
+    for x in range(len(map)):
+        for y in range(len(map[x])):
+            print(f"x:", x, f"y:", y, map[x][y])
+
+# print it horisontal, rows not split yet
+
+# map
+# len(map)
+
+def print_ordered(map):
+    for y in range(len(map)-1, -1, -1):
+        print_list = []
+        for x in range(len(map)):
+            # print(x, y)
+            print_list.append(map[x][y])
+        print(print_list)
+            
+#             # print(map[y][0], map[y][1], map[y][2])
+# # print the map in grid so it looks nice
+
+
+# print_ordered(map)
+
+# x = 4
+# y = 4
+
+# map = make_grid(x, y)
+
+# map
+
+# print_ordered(map)
+
+# should this be off manmap?
+def print_ordered_vision(map, man_x, man_y):
+    start_x = man_x-1
+    end_x = man_x+2
+    if end_x > len(map):
+        end_x = len(map)
+    
+    if start_x < 0:
+       start_x = 0
+
+    start_y = man_y+1
+    end_y = man_y-2
+    if end_y < 0:
+            end_y = -1
+
+    if start_y > len(map)-1:
+        start_y = len(map)-1
+
+    # print(f"start x: {start_x} end x: {end_x}, start_y: {start_y}, end_y: {end_y}")
+    for y in range(start_y, end_y, -1):
+        print_list = []
+        for x in range(start_x, end_x):
+            # print(x, y)
+            print_list.append(map[x][y])
+        print(print_list)
+# rpint 3x3 vision, checks for borders n what to change values when on a border cos it creates overshoot
+
+# print_ordered(man_map)
+# print_ordered_vision(man_map, 0, 0)
+# print_ordered_vision(man_map, 3, 0)
+# print_ordered_vision(man_map, 0, 3)
+# print_ordered_vision(man_map, 3, 3)
+
+# print_ordered(man_map)
+# print_ordered_vision(man_map, 2, 0)
+# print_ordered_vision(man_map, 3, 2)
+# print_ordered_vision(man_map, 2, 3)
+# print_ordered_vision(man_map, 2, 2)
+
+
+# man_y = 3
+# end_y = 0
+
+# man_x = 0
+# end_x = 1
+
+# range(man_y, end_y, -1)
+# for y in range(man_y, end_y, -1):
+#     print(y, f"askfjhlas")
+
+
+# map[random.randint(0, x)][random.randint(0, y)] = "@"
+
+# def place_obj_rand(map, object):
+#     rand_x = random.randint(0, len(map)-1)
+#     rand_x
+
+#     rand_y = random.randint(0, len(map[0])-1)
+#     rand_y
+
+#     print(f"rand coordinates is: ", rand_x, rand_y)
+#     map[rand_x][rand_y] = object
+# is this being used??????
+
+
+def place_obj(map, object):
+    rand_x = random.randint(0, len(map)-1)
+    # rand_x
+
+    rand_y = random.randint(0, len(map[0])-1)
+    # rand_y
+
+    # print(f"rand coordinates is: ", rand_x, rand_y)
+    map[rand_x][rand_y] = object
+# palces a random object donw on the ground at random spots, placing stuff from 'object' list, at bottom
+
+# place_obj(map, 1)
+
+def show_man_on_map(map, man_x, man_y):
+    man_map = copy.deepcopy(map)
+
+    # print(f"man coordinates is: ", man_x, man_y)
+    man_map[man_x][man_y] = "X"
+    return man_map
+
+# puts the man on their own map, gives u manmap, have to print ordered
+
+def man_loc_test(map, man_x, man_y):
+    loc_okay = True
+    if man_x > len(map)-1:
+        man_x = len(map)-1
+        loc_okay = False
+    
+    if man_x < 0:
+       man_x = 0
+       loc_okay = False
+
+    if man_y < 0:
+        man_y = 0
+        loc_okay = False
+
+    if man_y > len(map)-1:
+        man_y = len(map)-1
+        loc_okay = False
+    return man_x, man_y, loc_okay
+# tests if a move is actually feasible so man doesnt run off the map, replaces illegal moves with legal moves
+
+def man_move_result(underlying_map, man_x, man_y, loc_okay):
+    if loc_okay:
+        print(f"You moved.")
+    else:
+        print(f"Bang! You ran into the wall and hit your head. Ouch.")
+    man_map = show_man_on_map(underlying_map, man_x, man_y)
+    # print_ordered_vision(man_map, man_x, man_y)
+    return man_map
+# if loctest was okay then man moves, displays the move
+
+# interact w map objects to rpint interactions
+# pass in man spot on underlying to get single char
+def interactions(character):
+    if character == "@":
+        print("A giant snail licks you. Ew!")
+    elif character == "^":
+        print("A giant bat picks you up by the arms and flies you away.")
+        print("You are dropped into an unknown area of the cave.")
+        # get them to pick u up and drop u somewhere? itd be fun
+        man_x = random.randint(0, x-1)
+        man_y = random.randint(0, y-1)
+        man_map = man_move_result(underlying_map, man_x, man_y, loc_okay)
+        print_ordered_vision(man_map, man_x, man_y)
+    elif character == "%":
+        print("You hear a dripping")
+        print("A stalectite falls from the ceiling onto you. Ouch!")
+    elif character == "&":
+        print("You hear a laughing in the distance")
+        print("'OhOhOHoHooHOo!'")
+        print("Someone sounds happy.")
+    elif character == "+":
+        print("Bioluminescent algae grow on the walls, emitting a strange glow.")
+        print("What a pretty colour.")
+    elif character == "E":
+        print("The light at the end of the tunnel compells you.")
+    elif character == "-":
+        print("The emptiness fills you with loneliness.")
+
+# calculate which direction the tingle comes from(lets user know what direction exits in)
+# ITS NOT CONTINUALLY UPDATING???
+def direction_to_exit(man_x, man_y, exit_x, exit_y):
+    x_distance = exit_x - man_x
+    x_distance
+
+    y_distance = exit_y - man_y
+    y_distance
+
+    message = "You feel a tingling from the "
+
+    if x_distance > 0:
+        message = message + "North. "
+        print(message)
+    elif x_distance < 0:
+        message = message + "South. "
+        print(message)
+    elif y_distance > 0:
+        message = message + "East. "  
+        print(message)
+    elif x_distance < 0:
+        message = message + "West. "
+        print(message)
+
+
+    
+
+
+
+
+# GAME
+# starting cords for man n exit
+# need to randomise, can just put into object? just make sur eto save it(?)
+
+# SETUP MAP, PUT MAN AND OBJECTS ON GROUND
+
+
+
+# def walk_in_the_dark():
+
+# turn returns on when in a function
+print("You hear a voice in the distance whisper")
+x = int(input("Give me a number between 4-800: "))
+if x > 3 and x < 801:
+    print("Nice number.")
+else:
+    print(f"You entered {x}. You lie you die.")
+    # return
+y = int(input("Give me another number between 4-800: "))
+if y > 3 and y < 801:
+    print("Another nice number.")
+else:
+    print(f"You entered {y}. You try and sneak a lie in the second time, but my eyes are sharper. You die.")
+    # return
+
+print("=====")
+
+print("You wake up in a cave feeling just splendid if not a little disorientated.")
+print("Dingy smell, dripping walls, not the nicest place to be.")
+
+# x = 5
+# y = 5
+
+underlying_map = make_grid(x, y)
+
+# put obj on map
+object_list = ["@", "^", "&", "%", "+",]
+for object in object_list:
+    place_obj(underlying_map, object)
+
+# cords for man loc
+man_x = random.randint(0, x-1)
+man_y = random.randint(0, y-1)
+loc_okay = True
+
+# cords for exit loc
+exit_x = random.randint(0, x-1)
+exit_y = random.randint(0, y-1)
+# if man and exit location is the same regenerates exit loc until theyre different
+while exit_x == man_x and exit_y == man_y:
+    exit_x = random.randint(0, x-1)
+    exit_y = random.randint(0, y-1)
+
+# sets exit and man locations
+underlying_map[exit_x][exit_y] = "E"
+# sets man start loc to a blank space
+underlying_map[man_x][man_y] = "-"
+
+
+# print_grid(underlying_map)
+man_map = show_man_on_map(underlying_map, man_x, man_y)
+# # shows man on map, rid of later so its just ordered vision
+# print_ordered(man_map)
+print_ordered_vision(man_map, man_x, man_y)
+
+# maain while loop keeps turns running until win
+while not (man_x == exit_x and man_y == exit_y):
+    move = input("Where to? (w/a/s/d) ")
+    print("=====")
+
+    if move == "W" or (move == "w"):
+        man_x, man_y, loc_okay = man_loc_test(man_map, man_x, man_y+1)
+    elif move == "S" or (move == "s"):
+        man_x, man_y, loc_okay = man_loc_test(man_map, man_x, man_y-1)
+    elif move == "A" or (move == "a"):
+        man_x, man_y, loc_okay = man_loc_test(man_map, man_x-1, man_y)
+    elif move == "D" or (move == "d"):
+        man_x, man_y, loc_okay = man_loc_test(man_map, man_x+1, man_y)
+        
+    man_map = man_move_result(underlying_map, man_x, man_y, loc_okay)
+    print_ordered_vision(man_map, man_x, man_y)
+    interactions(underlying_map[man_x][man_y])
+    direction_to_exit(man_x, man_y, exit_x, exit_y)
+    
+print("You reach the exit and bid farewell to the void.")
+print("It responds with jazz.")
+
+
+# underlying_map[man_x][man_y]
+
+
+
+
+
+
+# object_list = ["@", "^", "&", "%", "+", "E"]
+
+
+
+# walk_in_the_dark()
+
+
+
+
+# DO??
+# randomise starting cords of man n exit
+# give exit a char
+# if man cords is same as object cords make smth happen
+# write interactions
+# warmer cooler? or could do incrementally say ur # steps away from the exit
+
+
+    
+
+# running commands
+# x = 4
+# y = 4
+
+# map = make_grid(x, y)
+
+# map
+
+
+
+# man_map = copy.deepcopy(map)
+
+# man_map = show_man_on_map(map, 2, 1)
+# print_ordered(man_map)
+# print_ordered_vision(man_map, 2, 1)
+
+# man_map = show_man_on_map(map, 3, 1)
+# print_ordered(man_map)
+# print_ordered_vision(man_map, 3, 1)
+
+
+# print_ordered(map)
+# print_ordered(man_map)
+
+
+# # place_obj(map, "1")
+# # place_obj(map, "@")
+# # place_obj(map, "*")
+# # place_obj(map, "1")
+
+
+# print_ordered(map)
+
+
+
+
+# print_ordered(man_map)
+
+
+# man_map = copy.deepcopy(map)
+# man_x = 1
+# man_y = 0
+# print(f"rand coordinates is: ", man_x, man_y)
+# man_map[man_x][man_y] = "X"
+
+# print_ordered(man_map)
