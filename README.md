@@ -1,0 +1,3 @@
+For a coding project last year I made a videogame inspired by the text-based game Hunt the Wumpus where the player is stuck in a cave and attempts to find the exit. I made this in Python and am proud of it because it uses many things I learnt such as double arrays to create the map, edge detection and random item spawning. It is also customizable to the user's preference with the ability to change the map size and balances the number of items spawning based on a ratio. 
+You can play it here: https://www.onlineide.pro/playground/share/e5020507-e895-4d5e-93ed-a9deecde8a81
+Github link: https://github.com/yahadaa/Cave-game/tree/main
